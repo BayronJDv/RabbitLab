@@ -1,12 +1,77 @@
+# Byte-compiled / optimized / DLL files
 __pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtualenv
+venv/
+ENV/
+env/
+.venv/
+venv.bak/
+
+# Pytest
+.pytest_cache/
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+.tox/
+.coverage
+.coverage.*
+.cache
+nose2-junit.xml
+coverage.xml
+
+# PyCharm
+.idea/
+
+# VS Code
+.vscode/
+
+# mypy
+.mypy_cache/
+
+# Bytecode cache
+__pycache__/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Docker
+docker-compose.override.yml
+.env
+
+# Logs
+*.log
+
+# Kubernetes local files
+*kube*
+
+# Generated files
 *.pyc
 *.pyo
 *.pyd
-*.swp
-*.egg-info/
-/dist/
-/build/
-/.eggs/
-/.tox/
-/.venv/
-/venv/
+
+# Node modules (if any front-end added later)
+node_modules/
+
