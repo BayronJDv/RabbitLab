@@ -15,9 +15,9 @@ exchange 'looking-for' (fanout)
    ├─→ socialmedia-svc (busca en BD de redes sociales)
    ├─→ officialrecords-svc (busca en BD de registros)
    └─→ financial-svc (busca en BD de información financiera)
-   
+
    ↓ (cada uno publica resultados)
-   
+
 exchange 'results' (fanout)
    │
    ↓
@@ -31,9 +31,10 @@ dashboard-svc (Flask)
 ## Servicios
 
 ### 1. **query-svc** (Puerto 5000)
+
 - **Propósito**: Punto de entrada para realizar consultas
 - **Endpoint**: `POST /query`
-- **Body**: 
+- **Body**:
   ```json
   {
     "name": "Juan Perez",
@@ -44,26 +45,31 @@ dashboard-svc (Flask)
 - **Acción**: Publica en exchange `looking-for`
 
 ### 2. **commercialinfo-svc**
+
 - **Propósito**: Busca información de empleos/trabajo
 - **BD en memoria**: 4 registros con id, name, workplace
 - **Resultado**: `{id, status, workplace, service}`
 
 ### 3. **socialmedia-svc**
+
 - **Propósito**: Busca perfiles en redes sociales
 - **BD en memoria**: 3 registros con id, name, profile, platform
 - **Resultado**: `{id, status, profile, platform, service}`
 
 ### 4. **officialrecords-svc**
+
 - **Propósito**: Busca registros oficiales (cédula, pasaporte, etc)
 - **BD en memoria**: 3 registros con id, name, record, status_record
 - **Resultado**: `{id, status, record, record_status, service}`
 
 ### 5. **financial-svc**
+
 - **Propósito**: Busca información financiera (cuentas bancarias, créditos)
 - **BD en memoria**: 4 registros con id, name, bank, account_type, credit_score, status
 - **Resultado**: `{id, status, bank, account_type, credit_score, account_status, service}`
 
 ### 6. **dashboard-svc** (Puerto 5001)
+
 - **Propósito**: Agrega resultados y visualiza
 - **Endpoints**:
   - `GET /health`: Estado
@@ -98,7 +104,6 @@ curl -X POST http://localhost:5000/query \
 docker-compose down
 ```
 
-
 ## Flujo de Ejecución
 
 1. **Enviar consulta** → `POST /query` en query-svc
@@ -112,6 +117,7 @@ docker-compose down
 ## Ejemplo de Datos
 
 ### Entrada (query-svc POST)
+
 ```json
 {
   "name": "Juan Perez",
@@ -123,6 +129,7 @@ docker-compose down
 ### Salidas (cada servicio)
 
 **commercialinfo-svc**:
+
 ```json
 {
   "id": "12345",
@@ -133,6 +140,7 @@ docker-compose down
 ```
 
 **socialmedia-svc**:
+
 ```json
 {
   "id": "12345",
@@ -144,6 +152,7 @@ docker-compose down
 ```
 
 **officialrecords-svc**:
+
 ```json
 {
   "id": "12345",
@@ -155,6 +164,7 @@ docker-compose down
 ```
 
 **financial-svc**:
+
 ```json
 {
   "id": "12345",
@@ -168,6 +178,7 @@ docker-compose down
 ```
 
 ### En Dashboard (/viewresults)
+
 Se agrupa por query_id y se muestran los 4 servicios con sus resultados.
 
 ## Estructura de Directorios
@@ -212,7 +223,5 @@ RabbitLab/
 - El dashboard usa **diccionario en memoria** (resultados se pierden al reiniciar)
 - El access a `results_dict` es **thread-safe** (usa locks)
 - Cada servicio identifica su origen con el campo `service` en el JSON publicado
-
-
 
 **Autor**: Bayron Jojoa - RabbitLab

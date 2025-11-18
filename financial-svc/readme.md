@@ -9,6 +9,7 @@ Busca información de cuentas bancarias, puntaje crediticio y estado financiero 
 ## Base de Datos en Memoria
 
 Contiene 4 registros de ejemplo con la siguiente estructura:
+
 - `id`: Identificación de la persona
 - `name`: Nombre completo
 - `bank`: Nombre del banco
@@ -25,6 +26,7 @@ Contiene 4 registros de ejemplo con la siguiente estructura:
 ## Formato de Respuesta
 
 ### Cuando encuentra información:
+
 ```json
 {
   "id": "12345",
@@ -38,6 +40,7 @@ Contiene 4 registros de ejemplo con la siguiente estructura:
 ```
 
 ### Cuando NO encuentra información:
+
 ```json
 {
   "id": "99999",
@@ -53,12 +56,15 @@ Contiene 4 registros de ejemplo con la siguiente estructura:
 ## Ejecución
 
 ### Con Docker Compose (Recomendado)
+
 El servicio se levanta automáticamente con:
+
 ```bash
 docker-compose up --build
 ```
 
 ### Standalone (sin Docker)
+
 ```bash
 cd financial-svc
 pip install pika
@@ -70,6 +76,7 @@ python app.py
 ## Logs
 
 El servicio genera logs con formato:
+
 ```
 [2025-11-18 10:30:45] [INFO] [Financial] Financial service conectado a RabbitMQ
 [2025-11-18 10:31:12] [INFO] [Financial] Query recibida: {'id': '12345', 'name': 'Juan Perez'}
@@ -79,6 +86,7 @@ El servicio genera logs con formato:
 ## Integración
 
 Este servicio se integra automáticamente con:
+
 - **query-svc**: Recibe queries de búsqueda
 - **dashboard-svc**: Envía resultados para visualización
 - **RabbitMQ**: Usa exchanges `looking-for` y `results`
