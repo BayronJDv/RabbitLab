@@ -13,7 +13,8 @@ exchange 'looking-for' (fanout)
    │
    ├─→ commercialinfo-svc (busca en BD de empleos)
    ├─→ socialmedia-svc (busca en BD de redes sociales)
-   └─→ officialrecords-svc (busca en BD de registros)
+   ├─→ officialrecords-svc (busca en BD de registros)
+   └─→ financial-svc (busca en BD de información financiera)
    
    ↓ (cada uno publica resultados)
    
@@ -57,7 +58,12 @@ dashboard-svc (Flask)
 - **BD en memoria**: 3 registros con id, name, record, status_record
 - **Resultado**: `{id, status, record, record_status, service}`
 
-### 5. **dashboard-svc** (Puerto 5001)
+### 5. **financial-svc**
+- **Propósito**: Busca información financiera (cuentas bancarias, créditos)
+- **BD en memoria**: 4 registros con id, name, bank, account_type, credit_score, status
+- **Resultado**: `{id, status, bank, account_type, credit_score, account_status, service}`
+
+### 6. **dashboard-svc** (Puerto 5001)
 - **Propósito**: Agrega resultados y visualiza
 - **Endpoints**:
   - `GET /health`: Estado
@@ -97,7 +103,7 @@ docker-compose down
 
 1. **Enviar consulta** → `POST /query` en query-svc
 2. **Publicación** → Query se publica en exchange `looking-for`
-3. **Consumo** → Los tres servicios (commercialinfo, socialmedia, officialrecords) reciben el mensaje
+3. **Consumo** → Los cuatro servicios (commercialinfo, socialmedia, officialrecords, financial) reciben el mensaje
 4. **Búsqueda** → Cada servicio busca en su BD en memoria
 5. **Publicación de resultados** → Cada servicio publica su resultado en exchange `results`
 6. **Agregación** → Dashboard consume y almacena resultados en diccionario
@@ -148,8 +154,21 @@ docker-compose down
 }
 ```
 
+**financial-svc**:
+```json
+{
+  "id": "12345",
+  "status": "found",
+  "bank": "Banco de Bogotá",
+  "account_type": "Cuenta de Ahorros",
+  "credit_score": 750,
+  "account_status": "Activo",
+  "service": "financial"
+}
+```
+
 ### En Dashboard (/viewresults)
-Se agrupa por query_id y se muestran los 3 servicios con sus resultados.
+Se agrupa por query_id y se muestran los 4 servicios con sus resultados.
 
 ## Estructura de Directorios
 
@@ -168,6 +187,10 @@ RabbitLab/
 │   ├── Dockerfile
 │   └── readme.md
 ├── officialrecords-svc/
+│   ├── app.py
+│   ├── Dockerfile
+│   └── readme.md
+├── financial-svc/
 │   ├── app.py
 │   ├── Dockerfile
 │   └── readme.md
