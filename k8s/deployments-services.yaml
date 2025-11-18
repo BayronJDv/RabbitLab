@@ -193,3 +193,25 @@ spec:
     - port: 5001
       targetPort: 5001
       nodePort: 30001
+
+
+# rh-svc Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rh-svc
+  namespace: rabbitlab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rh-svc
+  template:
+    metadata:
+      labels:
+        app: rh-svc
+    spec:
+      containers:
+        - name: rh-svc
+          image: rh-svc:latest
+          imagePullPolicy: Never
