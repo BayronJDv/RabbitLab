@@ -74,6 +74,14 @@ services:
     networks:
       - rabbitlab-network
 
+  creditbank-scv:
+    build: ./creditbank-scv
+    container_name : creditbank-scv
+    depends_on:
+      - rabbitmq
+    networks :
+      - "rabbitlab-network"
+
   dashboard-svc:
     build: ./dashboard-svc
     container_name: dashboard-svc
