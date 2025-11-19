@@ -92,6 +92,14 @@ services:
     networks:
       - rabbitlab-network
 
+  rh-svc:
+    build: ./rh-svc
+    container_name: rh-svc
+    depends_on:
+      - rabbitmq
+    networks:
+      - rabbitlab-network
+
 networks:
   rabbitlab-network:
     driver: bridge
